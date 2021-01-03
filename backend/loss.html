@@ -1,0 +1,34 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="/eel.js"></script>
+    <link rel="stylesheet" href="main.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script>
+        function reload() {
+            window.location.replace("main.html")
+        };     
+        
+        function keyPress(k) {
+            eel.restart()
+        };
+
+        function init_page_l() {
+            document.getElementById("bdy").addEventListener("keypress", keyPress);
+        };
+
+        eel.expose(init_page_l)
+        eel.expose(reload);
+    </script>
+    <title>Hangman</title>
+</head>
+<body id="bdy">
+    <div id="winCenter">
+        <h1 id="winTxt" style="color: red;">You Loose</h1>
+        <center>
+            <button type="button" class="btn btn-outline-secondary btn-lg btn-win" style="margin-top: 3%" onclick="eel.restart()">Again!</button>
+        </center>
+    </div>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="image/png"
+      href="images/favicon.png">
+
+    <!-- Necessary stylign & js plugins-->
+
+    <script type="text/javascript" src="/eel.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <!-- Devanagri input -->
+
+    <script type="text/javascript" src="libs/keyboard.js" charset="UTF-8"></script>
+    <link rel="stylesheet" type="text/css" href="libs/keyboard.css">
+
+    <!-- Add on-key listners to all the buttons on Devanagri-Keyboard -->
+
+    <!-- Wrappers for python to controll the ui -->
+
+    <script>
+
+        let activeImg = 0;
+
+        function set_pic_hint(hint) {
+            document.getElementById("i_hint").src = hint;
+        };
+
+        function set_txt_hint(hint) {
+            document.getElementById("hint").innerHTML = hint;
+        };
+
+
+        function set_full_word(fw) {
+            document.getElementById("word").innerHTML = fw;
+        };
+
+        function img_hint() {
+            document.getElementById("hint").style = "display: none;";
+            document.getElementById("i_hint").style = "display: block;";
+        };
+
+        function txt_hint() {
+            document.getElementById("hint").style = "display: block;";
+            document.getElementById("i_hint").style.display = "none";
+
+        };
+
+        function getActiveImg() {
+            return activeImg;
+        };
+
+        function setActiveImg(i) {
+            activeImg = i;
+        };
+
+        function updateHangman(link) {
+            document.getElementById("hangman").src = link
+        };
+
+        function uiFinish() {
+            let html = '';
+            let sanskrit = [];
+            let c;
+            for (let i = 65; 90 >= i; i++) {
+            c = String.fromCharCode(i);
+            html += '<button class="btn btn-primary pbtn" onclick="eel.keypress(' + "'" + c + "'" + ')">' + c + '</button>';
+            }
+
+            document.getElementById("keyboard-eng").innerHTML = html;
+
+        };
+
+        function winScreen() {
+            window.location.replace("win.html")
+        };
+
+        function looseScreen(){
+            window.location.replace("loss.html")
+        };
+
+        function keyPress(k) {
+            console.log(k.keyCode)
+            if (k.keyCode != 13) {
+                eel.keypress(String.fromCharCode(k.keyCode));
+            }
+
+        };
+
+        function kpec() {
+            document.getElementById("bdy").addEventListener("keypress", keyPress);
+        };
+
+        function hindireader() {
+            val = document.getElementById("keyboard-hi").value
+            for (var i = 0; i < val.length; i++) {
+              keyPress(val.charAt(i));
+            }
+        };
+
+        // Kill da window
+
+        function kill() {
+            window.close();
+        }
+
+        // Expose the wrappers
+
+        eel.expose(kill);
+        eel.expose(set_pic_hint);
+        eel.expose(set_txt_hint);
+        eel.expose(set_full_word);
+        eel.expose(img_hint);
+        eel.expose(txt_hint);
+        eel.expose(uiFinish);
+        eel.expose(getActiveImg);
+        eel.expose(setActiveImg);
+        eel.expose(updateHangman);
+        eel.expose(winScreen);
+        eel.expose(looseScreen)
+        eel.expose(kpec);
+
+        // Start the actual game
+
+        eel.start_game();
+
+    </script>
+</head>
+<body id="bdy">
+    <center>
+        <div class="title_block">
+            <h1>Vadhakarmadhikarin</h1>
+        </div>
+
+        <!-- The segment to render the Hangman -->
+
+        <div class="image_segment" style="margin: 3%;">
+            <img src="https://raw.githubusercontent.com/simonjsuh/Vanilla-Javascript-Hangman-Game/master/images/0.jpg" id = "hangman">
+        </div>
+
+        <!-- The segment to rener the hints -->
+
+        <div class="gameplay_segment">
+            <h3 id="hint" style="display: block;">Hint</h3>
+            <img id="i_hint" src="" style="display: none;" width=300 height=200>
+            <h2 id="word">_ _ _ _ _ _</h2>
+        </div>
+
+        <!-- English Keyboard -->
+
+        <div id="keyboard-eng" style="margin-bottom: 3%"></div>
+
+        <!-- Devanagri Time! -->
+        <!-- Thanks to GreyWwiveren.com for the excellent virtual keyboard -->
+
+        <div class="devanagri" style="margin-bottom: 3%">
+          <div class="devanagri-script_holder">
+            <input type="text" class="keyboardInput" lang="hi" id="keyboard-hi"><br><button class="btn btn-primary" onclick="hindireader();">Submit</button>
+          </div>
+        </div>
+
+        <!-- Same Image/Question? No prob.-->
+
+        <div id="troubleshoot">
+            <button class="btn btn-primary btn-lg">Same image? Press me to reshuffle the database</button>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <p style="color:gray">We only use Devanagri. Sorry for no latin</p>
+    </center>
+</body>
+</html>
