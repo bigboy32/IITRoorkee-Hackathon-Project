@@ -1,3 +1,6 @@
+from indic_transliteration import sanscript
+from indic_transliteration.sanscript import transliterate
+
 import eel
 import random
 import string
@@ -6,6 +9,8 @@ import os
 import sys
 
 eel.init('backend')
+
+str2dev = lambda data: transliterate(data, sanscript.HK, sanscript.DEVANAGARI)
 
 class HangmanHandler():
     cur = open("db.txt", "r")
@@ -20,8 +25,15 @@ class HangmanHandler():
     full_word = []
     fw = []
 
+    dev_word = str2dev(word)
+    dev_fword = []
+    dev_fw = []
+
     for item in range(len(list(word))):
         full_word.append("_")
+
+    for item in range(len(list(dev_word))):
+        dev_fword.append("_")
 
     def update_db(self, w):
         cur = open("db.txt", "w")
@@ -42,6 +54,26 @@ class HangmanHandler():
             self.full_word = "".join(str(v) for v in self.fw)
 
             if self.full_word == self.word:
+                return "FULL"
+            else:
+                self.uw.append(char)
+                return "HALF"
+        else:
+            self.uw.append(char)
+            return "BAD"
+
+    def smb_game(self, guess):
+        char = guess
+        indecies = [i for i, x in enumerate(self.dev_word) if x == char]
+
+        if indecies != []:
+            self.dev_fw = list(self.dev_fword)
+            for item in indecies:
+                self.fw[item] = char
+
+            self.dev_fword = "".join(str(v) for v in self.fw)
+
+            if self.dev_fword == self.dev_word:
                 return "FULL"
             else:
                 self.uw.append(char)
@@ -110,6 +142,29 @@ def keypress(key):
 @eel.expose()
 def startWin():
     eel.flwRain()
+
+@eel.expose()
+def smbKeypress(key):
+    handler = handler_img[0]
+    img = handler_img[1]
+    res = handler.smb_game(key.lower())
+    eel.setDeva("".join(str(v) + " " for v in list(handler.dev_fword)))
+    if res == "BAD":
+        base_url = "https://raw.githubusercontent.com/simonjsuh/Vanilla-Javascript-Hangman-Game/master/images/{}.jpg"
+        if img == 6:
+            eel.looseScreen()
+            eel.init_page_l()
+        else:
+            eel.updateHangman(base_url.format(str(img + 1)))
+            img += 1
+
+    if res == "FULL":
+        eel.winScreen()
+        eel.init_page_w()
+
+    handler_img[1] = img
+    handler_img[0] = handler
+
 
 @eel.expose()
 def restart():

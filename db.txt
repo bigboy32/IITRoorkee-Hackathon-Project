@@ -1,2 +1,3 @@
 gajau:That thing, that thing in front of many temples Elep.... (Dual, Nominative)
 pustakam:School B.... The thing where all your information for your lecture is. (No not the sylabus) (Accusative, Singular)
+flower:images/flower.jpg

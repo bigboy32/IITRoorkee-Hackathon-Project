@@ -95,10 +95,16 @@
             document.getElementById("bdy").addEventListener("keypress", keyPress);
         };
 
+        function smbKeyPress(k) {
+          if (k.keyCode != 13) {
+              eel.smbKeypress(String.fromCharCode(k.keyCode));
+          }
+        }
+
         function hindireader() {
             val = document.getElementById("keyboard-hi").value
             for (var i = 0; i < val.length; i++) {
-              keyPress(val.charAt(i));
+              smbKeyPress(val.charAt(i));
             }
         };
 
@@ -107,6 +113,10 @@
         function kill() {
             window.close();
         }
+
+        function setDeva(txt) {
+          document.getElementById("dev").innerHTML = "Or on Devanagri: " + text;
+        };
 
         // Expose the wrappers
 
@@ -123,6 +133,7 @@
         eel.expose(winScreen);
         eel.expose(looseScreen)
         eel.expose(kpec);
+        eel.expose(setDeva);
 
         // Start the actual game
 
@@ -142,12 +153,13 @@
             <img src="https://raw.githubusercontent.com/simonjsuh/Vanilla-Javascript-Hangman-Game/master/images/0.jpg" id = "hangman">
         </div>
 
-        <!-- The segment to rener the hints -->
+        <!-- The segment to render the hints -->
 
         <div class="gameplay_segment">
             <h3 id="hint" style="display: block;">Hint</h3>
             <img id="i_hint" src="" style="display: none;" width=300 height=200>
             <h2 id="word">_ _ _ _ _ _</h2>
+            <p style="color:gray" id="dev">Or on Devanagri: _ _ _ _ _ _ _ _ </p>
         </div>
 
         <!-- English Keyboard -->
@@ -175,7 +187,6 @@
         <br>
         <br>
 
-        <p style="color:gray">We only use Devanagri. Sorry for no latin</p>
     </center>
 </body>
 </html>
