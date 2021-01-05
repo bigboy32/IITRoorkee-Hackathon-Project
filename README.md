@@ -11,7 +11,8 @@ Setup:
     
    Get all the pythpon packages:
    Open cmd and type:
-   pip install eel requests
+   
+   pip install eel requests indic_transliteration
    
 Usage:
   python app.py
