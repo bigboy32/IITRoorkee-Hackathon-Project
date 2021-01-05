@@ -5,6 +5,7 @@ This is a Hangman Game, made in js&python to train your sanskrit skills
 Setup:
 
   Requirements:
+  
     - Google Chrome
     - Python with pip
     
