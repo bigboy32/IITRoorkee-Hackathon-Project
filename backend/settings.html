@@ -70,16 +70,16 @@
         };
 
         function change_p() {
-          code = `        <center>
-          <div class="login">
-            Username: <input type="text" id="uname" placeholer="Username">
-            Password: <input type="password" id="passwd" placeholer="Password">
-
-            <hr>
-
-            <button class="btn btn-primary btn-lg" onclick="signin">Sign-In</button> | <button class="btn btn-primary btn-lg" onclick="register()">Register</button>
-          </div>
-        </center>`
+          code = `                  <center>
+                      <h3>Please visit <a href="https://rk3k3ug6bxqm6zif.anvil.app/7RW34ZQIM63GI2AUA6WWADJI" target="_blank">Me</a> and sign-up/sign-in to claim your access token.</h3>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Access Token</label>
+                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Access Token">
+                        <small id="emailHelp" class="form-text text-muted">We need it to get your leaderboard-id. DO NOT SHARE IT WITH ANYONE!</small>
+                        <button onclick="eel.fwrite(document.getElementById('exampleInputEmail1').value)" class='btn btn-lg btn-primary'>Send!</button>
+                      </div>
+                    </center>
+                    `
 
           s = document.getElementById("p")
           s.class = "active"
@@ -95,11 +95,12 @@
    <body>
       <div class="sidebar">
          <a class="" onclick="change_p()" id="p">Profile</a>
-         <a class="">Leaderboard</a>
+         <a href="https://rk3k3ug6bxqm6zif.anvil.app/7RW34ZQIM63GI2AUA6WWADJI" target="_blank">Leaderboard</a>
          <a href="/main.html">Back</a>
       </div>
       <div class="content" id="content">
-          <h1><- Press Me!</h1>
+          <h1> <- Press Me!</h1>
+
       </div>
    </body>
 </html>

@@ -11,20 +11,9 @@ import sys
 import pickle
 
 import configparser
+import requests
 
 eel.init('backend')
-config = configparser.ConfigParser()
-
-config.read("config.ini")
-
-goal = config["GamePlay"]["goal"]
-q = config["GamePlay"]["q"]
-
-dq = 0
-caq = 0
-
-open("glob.pkl", "wb").truncate()
-pickle.dump([goal, q, dq, caq], open("glob.pkl", "wb"))
 
 str2dev = lambda data: transliterate(data, sanscript.HK, sanscript.DEVANAGARI)
 
@@ -36,13 +25,9 @@ def setglobs(goal, q, dq, caq):
     pickle.dump([goal, q, dq, caq], open("glob.pkl", "wb"))
 
 class HangmanHandler():
-    global goal, q, dq, caq
 
-    goal = config["GamePlay"]["goal"]
-    q = config["GamePlay"]["q"]
 
     dq = 0
-    caq = 0
 
     cur = open("db.txt", "r")
     s = random.sample(cur.readlines(), 1)
@@ -132,6 +117,34 @@ def start_game():
 '''
 
 @eel.expose()
+def push():
+    h = handler_img[0]
+    burl = "https://RK3K3UG6BXQM6ZIF.anvil.app/_/private_api/7RW34ZQIM63GI2AUA6WWADJI/update_leaderboard/"
+    try:
+        tok = configparser.ConfigParser()
+        tok.read("config.ini")
+        tok = tok["push"]["token"]
+    except:
+        eel.a("Invalid Token! Please Close The Brower To Exit")
+        exit()
+    else:
+        burl += tok
+        burl += "/" + str(h.dq)
+
+        requests.get(burl)
+
+        eel.a("You can close the Browser-window")
+        exit()
+
+@eel.expose()
+def fwrite(tk):
+    with open("config.ini", "w") as f:
+        f.write(f"""
+[push]
+token={tk}
+        """)
+
+@eel.expose()
 def start_game():
     handler = handler_img[0]
     if "http" in handler.hint or "images/" in handler.hint:
@@ -150,11 +163,6 @@ def start_game():
 
 @eel.expose()
 def keypress(key):
-    x = getglobs()
-    goal = x[0]
-    q = x[1]
-    dq = x[2]
-    caq = x[3] 
     handler = handler_img[0]
     img = handler_img[1]
     res = handler.play_game(key.lower())
@@ -162,8 +170,10 @@ def keypress(key):
     if res == "BAD":
         base_url = "https://raw.githubusercontent.com/simonjsuh/Vanilla-Javascript-Hangman-Game/master/images/{}.jpg"
         if img == 6:
+
             eel.looseScreen()
             eel.init_page_l()
+
         else:
             eel.updateHangman(base_url.format(str(img + 1)))
             img += 1
@@ -172,10 +182,11 @@ def keypress(key):
         eel.winScreen()
         eel.init_page_w()
 
+        handler.dq += 1
+
     handler_img[1] = img
     handler_img[0] = handler
 
-    setglobs(goal, q, dq, caq)
 
 @eel.expose()
 def startWin():
@@ -220,4 +231,3 @@ try:
     eel.start('main.html')
 except:
     pass
-

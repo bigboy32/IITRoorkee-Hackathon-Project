@@ -40,6 +40,7 @@
         };
 
         function set_full_word_red(fw) {
+            console.log("red");
             document.getElementById("word").style.color = "red";
             document.getElementById("word").innerHTML = fw;
         };
@@ -85,10 +86,10 @@
         };
 
         function looseScreen(){
+            debugger;
             setTimeout(function() {
               window.location.replace("loss.html")
             }, 3000)
-
             eel.set_full()
         };
 
@@ -156,7 +157,11 @@
 
         function reopen() {
           window.reload();
-        }
+        };
+
+        function a(t) {
+          alert(t);
+        };
         // Expose the wrappers
 
         eel.expose(reopen);
@@ -175,7 +180,7 @@
         eel.expose(kpec);
         eel.expose(set_full_word_red)
         eel.expose(setDeva);
-
+        eel.expose(a);
         // Start the actual game
 
         eel.start_game();
@@ -193,6 +198,9 @@
     <ul class="navbar-nav">
       <li class="nav-item active">
         <a class="nav-link" href="settings.html">Open Settings</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="settings.html" onclick="eel.push()">Quit & Publish Score</a>
       </li>
     </ul>
   </div>
@@ -220,7 +228,7 @@
 
         <div id="keyboard-eng" style="margin-bottom: 3%"></div>
         <table class="tab-kb">
-          <tr> 
+          <tr>
           <td><input type="button" class="bt" onclick="keyPress('Ā')" value="Ā"></td>
           <td><input type="button" class="bt" onclick="keyPress('Ḍ')" value="Ḍ"></td>
           <td><input type="button" class="bt" onclick="keyPress('Ḥ')" value="Ḥ"></td>
@@ -238,7 +246,7 @@
           <td><input type="button" class="bt" onclick="keyPress('Ṭ')" value="Ṭ"></td>
           <td><input type="button" class="bt" onclick="keyPress('Ū')" value="Ū"></td>
           </tr>
-          <tr> 
+          <tr>
           <td><input type="button" class="bt" onclick="keyPress('ā')" value="ā"></td>
           <td><input type="button" class="bt" onclick="keyPress('ḍ')" value="ḍ"></td>
           <td><input type="button" class="bt" onclick="keyPress('ḥ')" value="ḥ"></td>
@@ -256,7 +264,7 @@
           <td><input type="button" class="bt" onclick="keyPress('ṭ')" value="ṭ"></td>
           <td><input type="button" class="bt" onclick="keyPress('ū')" value="ū"></td>
           </tr>
-          <tr> 
+          <tr>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
