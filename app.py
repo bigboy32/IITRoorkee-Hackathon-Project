@@ -8,11 +8,42 @@ import time
 import os
 import sys
 
+import pickle
+
+import configparser
+
 eel.init('backend')
+config = configparser.ConfigParser()
+
+config.read("config.ini")
+
+goal = config["GamePlay"]["goal"]
+q = config["GamePlay"]["q"]
+
+dq = 0
+caq = 0
+
+open("glob.pkl", "wb").truncate()
+pickle.dump([goal, q, dq, caq], open("glob.pkl", "wb"))
 
 str2dev = lambda data: transliterate(data, sanscript.HK, sanscript.DEVANAGARI)
 
+def getglobs():
+    x = pickle.load(open("glob.pkl", "rb"))
+    return x
+def setglobs(goal, q, dq, caq):
+    open("glob.pkl", "wb").truncate()
+    pickle.dump([goal, q, dq, caq], open("glob.pkl", "wb"))
+
 class HangmanHandler():
+    global goal, q, dq, caq
+
+    goal = config["GamePlay"]["goal"]
+    q = config["GamePlay"]["q"]
+
+    dq = 0
+    caq = 0
+
     cur = open("db.txt", "r")
     s = random.sample(cur.readlines(), 1)
     word = random.choice(s).lower().replace("\n", "").rstrip().split(":", 1)
@@ -119,6 +150,11 @@ def start_game():
 
 @eel.expose()
 def keypress(key):
+    x = getglobs()
+    goal = x[0]
+    q = x[1]
+    dq = x[2]
+    caq = x[3] 
     handler = handler_img[0]
     img = handler_img[1]
     res = handler.play_game(key.lower())
@@ -138,6 +174,8 @@ def keypress(key):
 
     handler_img[1] = img
     handler_img[0] = handler
+
+    setglobs(goal, q, dq, caq)
 
 @eel.expose()
 def startWin():
@@ -165,13 +203,21 @@ def smbKeypress(key):
     handler_img[1] = img
     handler_img[0] = handler
 
+@eel.expose()
+def set_full():
+    eel.set_full_word_red(handler_img[0].word)
 
 @eel.expose()
 def restart():
     handler_img[1] =0
     reset()
     eel.reload()
+@eel.expose()
+def res():
+    eel.reopen()
 try:
+
     eel.start('main.html')
 except:
     pass
+

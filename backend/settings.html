@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8">
+      </meta>
+      <script type="text/javascript" src="/eel.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+      <title></title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>
+         body {
+         margin: 0;
+         font-family: "Lato", sans-serif;
+         }
+         .sidebar {
+         margin: 0;
+         padding: 0;
+         width: 200px;
+         background-color: #f1f1f1;
+         position: fixed;
+         height: 100%;
+         overflow: auto;
+         }
+         .sidebar a {
+         display: block;
+         color: black;
+         padding: 16px;
+         text-decoration: none;
+         }
+         .sidebar a.active {
+         background-color: blue;
+         color: white;
+         }
+         .sidebar a:hover:not(.active) {
+         background-color: #555;
+         color: white;
+         }
+         div.content {
+         margin-left: 200px;
+         padding: 1px 16px;
+         height: 1000px;
+         }
+         @media screen and (max-width: 700px) {
+         .sidebar {
+         width: 100%;
+         height: auto;
+         position: relative;
+         }
+         .sidebar a {float: left;}
+         div.content {margin-left: 0;}
+         }
+         @media screen and (max-width: 400px) {
+         .sidebar a {
+         text-align: center;
+         float: none;
+         }
+         }
+      </style>
+      <script>
+        function change_s() {
+          code = `        Goal: <input type="number" id="goal" placeholder="Correct Answer Goal"><br><br>
+        Questions: <input type="number" id="q" placeholder="N. Questions"><br><br>
+        <button class="btn btn-outline btn-primary btn-lg" onclick="submit_s();">Submit</button>`
+
+          s = document.getElementById("s")
+          s.class = "active"
+
+          document.getElementById("content").innerHTML = code
+        };
+
+        function change_p() {
+          code = `        <center>
+          <div class="login">
+            Username: <input type="text" id="uname" placeholer="Username">
+            Password: <input type="password" id="passwd" placeholer="Password">
+
+            <hr>
+
+            <button class="btn btn-primary btn-lg" onclick="signin">Sign-In</button> | <button class="btn btn-primary btn-lg" onclick="register()">Register</button>
+          </div>
+        </center>`
+
+          s = document.getElementById("p")
+          s.class = "active"
+
+          document.getElementById("content").innerHTML = code
+        };
+
+        function submit_s() {
+          eel.cnf(document.getElementById("goal").value, document.getElementById("q").value)
+        }
+      </script>
+   </head>
+   <body>
+      <div class="sidebar">
+         <a class="" onclick="change_p()" id="p">Profile</a>
+         <a class="">Leaderboard</a>
+         <a href="/main.html">Back</a>
+      </div>
+      <div class="content" id="content">
+          <h1><- Press Me!</h1>
+      </div>
+   </body>
+</html>
